@@ -83,8 +83,15 @@ def numLeaves (t : BinTree) : Nat :=  -- by sorry
  -/
 
 theorem leaves_eq_nodes_succ (t : BinTree) : numLeaves t = numNodes t + 1 := -- Delete the proof below
- by
-  induction t
-  . simp [numLeaves, numNodes]
-  . simp [numLeaves, numNodes]
+ BinTree.rec
+  (motive := fun t => numLeaves t = numNodes t + 1)
+  (by simp [numLeaves, numNodes])
+  (fun l r ihl ihr =>
+  (
+    by
+    simp at ihl
+    simp at ihr
+    simp [numLeaves, numNodes, ihl, ihr]
     grind
+  ))
+  t
